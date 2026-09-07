@@ -1,0 +1,19 @@
+meta {
+  name: Create Report
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/reports
+  body: json
+}
+
+body:json {
+  {
+    "address": "Calle Principal 123, entre 5ta y 6ta avenida",
+    "description": "Hay un chorro de agua saliendo de la tierra, aproximadamente 2 metros de diámetro",
+    "severity": "high",
+    "reporterPhone": "+52 5512345678"
+  }
+}

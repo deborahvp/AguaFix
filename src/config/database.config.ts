@@ -5,6 +5,8 @@ import * as path from 'path';
 dotenv.config();
 
 export function databaseConfig(): TypeOrmModuleOptions {
+  const isProduction = process.env.NODE_ENV === 'production';
+
   return {
     type: 'postgres',
     host: process.env.DB_HOST || 'localhost',
@@ -12,9 +14,13 @@ export function databaseConfig(): TypeOrmModuleOptions {
     username: process.env.DB_USER || 'postgres',
     password: process.env.DB_PASSWORD || 'postgres',
     database: process.env.DB_NAME || 'aguafix_db',
-    entities: [path.join(__dirname, '../**/*.entity.ts')],
-    migrations: [path.join(__dirname, '../database/migrations/*.ts')],
-    synchronize: false,
+    entities: isProduction
+      ? [path.join(__dirname, '../**/*.entity.js')]
+      : [path.join(__dirname, '../**/*.entity.ts')],
+    migrations: isProduction
+      ? [path.join(__dirname, '../database/migrations/*.js')]
+      : [path.join(__dirname, '../database/migrations/*.ts')],
+    synchronize: !isProduction,
     logging: process.env.NODE_ENV === 'development',
     migrationsRun: false,
   };

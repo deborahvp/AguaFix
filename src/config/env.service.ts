@@ -13,10 +13,10 @@ export class EnvService {
   }
 
   getNumber(key: string): number {
-    return this.env.get(key).asInt();
+    return this.env.get(key).required().asInt();
   }
 
   getBoolean(key: string): boolean {
-    return this.env.get(key).asBool();
+    return this.env.get(key).required().asBool();
   }
 }

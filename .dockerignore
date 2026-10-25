@@ -1,0 +1,12 @@
+.env
+.env.local
+.env.*.local
+compose.yaml
+docker-compose.yml
+node_modules
+dist
+.git
+.github
+bruno
+.claude
+*.md

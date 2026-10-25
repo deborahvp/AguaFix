@@ -1,13 +1,13 @@
-import { Report } from '../entities/report.entity';
+import { CreateReportDto } from '../dtos/create-report.dto';
 
-export function generateReportTemplate(report: Report): string {
-  const severityColors = {
+export function generateReportTemplate(dto: CreateReportDto, photoUrl: string): string {
+  const severityColors: Record<string, string> = {
     low: '#FFC107',
     medium: '#FF9800',
     high: '#F44336',
   };
 
-  const color = severityColors[report.severity] || '#9E9E9E';
+  const color = severityColors[dto.severity] || '#9E9E9E';
 
   return `
     <!DOCTYPE html>
@@ -69,6 +69,15 @@ export function generateReportTemplate(report: Report): string {
             text-transform: uppercase;
             font-size: 12px;
           }
+          .photo {
+            margin: 20px 0;
+            text-align: center;
+          }
+          .photo img {
+            max-width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+          }
           .footer {
             margin-top: 30px;
             padding-top: 20px;
@@ -90,32 +99,29 @@ export function generateReportTemplate(report: Report): string {
 
             <table>
               <tr>
-                <td class="label">ID del Reporte</td>
-                <td class="value">${report.id}</td>
-              </tr>
-              <tr>
                 <td class="label">Ubicación</td>
-                <td class="value">${report.address}</td>
+                <td class="value">${dto.address}</td>
               </tr>
               <tr>
                 <td class="label">Descripción</td>
-                <td class="value">${report.description}</td>
+                <td class="value">${dto.description}</td>
               </tr>
               <tr>
                 <td class="label">Severidad</td>
                 <td class="value">
-                  <span class="severity-badge">${report.severity}</span>
+                  <span class="severity-badge">${dto.severity}</span>
                 </td>
               </tr>
               <tr>
                 <td class="label">Teléfono de Contacto</td>
-                <td class="value">${report.reporterPhone}</td>
-              </tr>
-              <tr>
-                <td class="label">Fecha de Reporte</td>
-                <td class="value">${new Date(report.createdAt).toLocaleString('es-MX')}</td>
+                <td class="value">${dto.reporterPhone}</td>
               </tr>
             </table>
+
+            <div class="photo">
+              <p><strong>Foto de la fuga:</strong></p>
+              <img src="${photoUrl}" alt="Foto de la fuga de agua" />
+            </div>
 
             <p style="background-color: #fff3cd; padding: 12px; border-radius: 4px; border-left: 4px solid #ffc107; margin-top: 20px;">
               ⚠️ <strong>Acción Requerida:</strong> Por favor revisar y atender este reporte lo antes posible.

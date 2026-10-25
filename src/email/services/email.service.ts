@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
-import { Report } from '../../reports/entities/report.entity';
+import { CreateReportDto } from '../../reports/dtos/create-report.dto';
 import { generateReportTemplate } from '../../reports/templates/report.template';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class EmailService {
   constructor() {
     this.transporter = nodemailer.createTransport({
       host: process.env.MAIL_HOST,
-      port: parseInt(process.env.MAIL_PORT) || 587,
+      port: parseInt(process.env.MAIL_PORT ?? '587', 10) || 587,
       secure: false,
       auth: {
         user: process.env.MAIL_USER,
@@ -33,9 +33,9 @@ export class EmailService {
     }
   }
 
-  async sendReportNotification(report: Report): Promise<void> {
-    const template = generateReportTemplate(report);
-    const subject = `[AguaFix] Nuevo reporte de fuga - ID: ${report.id}`;
+  async sendReportNotification(dto: CreateReportDto, photoUrl: string): Promise<void> {
+    const template = generateReportTemplate(dto, photoUrl);
+    const subject = `[AguaFix] Nuevo reporte de fuga - ${dto.address}`;
     const maintenanceEmail = process.env.MAINTENANCE_EMAIL || 'mantenimiento@municipio.gov.mx';
 
     await this.sendEmail(maintenanceEmail, subject, template);

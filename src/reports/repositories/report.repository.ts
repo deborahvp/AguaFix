@@ -22,7 +22,7 @@ export class ReportRepository {
     return this.repository.findOne({ where: { id } });
   }
 
-  async update(id: number, report: Partial<Report>): Promise<Report> {
+  async update(id: number, report: Partial<Report>): Promise<Report | null> {
     await this.repository.update(id, report);
     return this.findById(id);
   }

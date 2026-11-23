@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EnvService } from './config/env.service';
 import { databaseConfig } from './config/database.config';
@@ -22,6 +23,7 @@ import { EmailModule } from './email/email.module';
     ReportsModule,
     EmailModule,
   ],
+  controllers: [AppController],
   providers: [EnvService],
   exports: [EnvService],
 })

@@ -7,6 +7,7 @@ export class AppController {
     return {
       status: 'ok',
       service: 'aguafix-api',
+      version: '1.0.1',
       timestamp: new Date().toISOString(),
     };
   }
